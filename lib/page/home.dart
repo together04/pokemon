@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon/const.dart';
-import 'package:pokemon/model/userLogin.dart';
 import 'package:pokemon/widget/pokemon_listview.dart';
 import 'package:pokemon/widget/snackBar.dart';
 
@@ -15,8 +14,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-Future<UserLogin> login(
-    BuildContext context, String email, String password) async {
+Future<void> login(BuildContext context, String email, String password) async {
   final response = await http.post(
     Uri.parse(Const.signIn),
     headers: {
@@ -29,7 +27,7 @@ Future<UserLogin> login(
   );
   if (response.statusCode == 200) {
     showSnackBar(context, '로그인에 성공하였습니다.');
-    Const.token = UserLogin.fromJson(jsonDecode(response.body)).accessToken!;
+    Const.token = jsonDecode(response.body);
   } else if (response.statusCode == 400) {
     showSnackBar(context, '이메일이 올바르지 않습니다.');
   } else if (response.statusCode == 403) {
@@ -37,7 +35,6 @@ Future<UserLogin> login(
   } else if (response.statusCode == 422) {
     showSnackBar(context, '올바른 정보를 입력해주세요.');
   }
-  return UserLogin.fromJson(jsonDecode(response.body));
 }
 
 class _HomePageState extends State<HomePage> {

@@ -13,7 +13,7 @@ class PokemonPage extends StatefulWidget {
   State<PokemonPage> createState() => _PokemonPageState();
 }
 
-Future<PokemonInfo> getUserSealInfo(int? sealNumber) async {
+Future<PokemonInfo> getUserSealInfo(int sealNumber) async {
   final response = await http.get(
     Uri.parse(Const.sealInfo)
         .replace(queryParameters: {'seal_id': '$sealNumber'}),
